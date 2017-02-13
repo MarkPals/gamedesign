@@ -13,8 +13,6 @@
                                             
 <!--                                            levelpagina-->
                 <div id="level">   
-                    <?php echo $naam;
-                    ?>
                     <a href="level1.php"><img src="media/test.jpg"> </a>
                     <a href="level2.php"><img src="media/test.jpg"> </a>
                     <a href="level3.php"><img src="media/test.jpg"> </a>
