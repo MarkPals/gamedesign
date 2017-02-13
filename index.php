@@ -8,7 +8,7 @@
 </HEAD>
 <BODY>
     
-    <h1 class="title">Sybrens riding dildo adventure</h1>
+    <h1 class="title">Steves riding dildo adventure</h1>
     <div id="test">             <!-- Blok waar de game in komt te staan -->
                                             
 <!--                                            Startpagina-->
