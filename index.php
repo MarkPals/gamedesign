@@ -7,29 +7,34 @@
 <TITLE>SRDA</TITLE>
 </HEAD>
 <BODY>
-    
-    <h1 class="title">Steves riding dildo adventure</h1>
+	<h1 class="title">Steves riding dildo adventure</h1>
     <div id="test">             <!-- Blok waar de game in komt te staan -->
                                             
 <!--                                            Startpagina-->
-                <div id="naam">
-                    <form action="level.php" method="post">                     <!-- Formulier om naam in te vullen --> 
-                    <h2>Player name:</h2>
-                    <input required type="text" name="naam" id="naam"><br>
-                    <input type="submit" name="submit" id="submit" value="Start game">
-                    </form>
-                    <div class="credits_container">
-    					<p class="credits_title">Credits</p>
-    					<ul class="credits">
-	    					<li>Niels van Faassen</li>
-	    					<li>Mark Pals</li>
-					    	<li>Ramon Dubbink</li>
-					    	<li>Lars Hofsink</li>
-					    	<li>Jeroen Mager</li>
-					    	<li>Stijn ter Keurs</li>
-    					</ul>
-    				</div>
-                </div>
+	<div id="dick">
+		<img src="web_img/dick.gif" style="width: 100px; height: 100px; margin-left: ; margin-top: 2.5%; float: left;">
+	</div>
+	<div id="dick2">
+		<img src="web_img/dick2.gif" style="width: 100px; height: 100px; margin-right: 22%; margin-top: 2.2%; float: right;">
+	</div>
+		<div id="naam">
+			<form action="level.php" method="post">                     <!-- Formulier om naam in te vullen --> 
+				<h2>Player name:</h2>
+                <input required type="text" name="naam" id="naam"><br>
+                <input type="submit" name="submit" id="submit" value="Start game">
+            </form>
+            <div class="credits_container">
+    			<p class="credits_title">Credits</p>
+    				<ul class="credits">
+	    				<li>Niels van Faassen</li>
+	    				<li>Mark Pals</li>
+					    <li>Ramon Dubbink</li>
+					    <li>Lars Hofsink</li>
+					    <li>Jeroen Mager</li>
+					    <li>Stijn ter Keurs</li>
+    				</ul>
+    		</div>
+        </div>
     </div>
                                                 
 <!--    PHP Code om de naam op te slaan in een variabele-->
@@ -40,10 +45,6 @@
     }
 
 
-?> 
-
- 
-
-    
+?>
 </BODY>
 </HTML>

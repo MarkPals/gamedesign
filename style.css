@@ -3,6 +3,7 @@ body{
     background-repeat: no-repeat;
     background-size: cover;
     height: 100%;
+    overflow: hidden;
 }
 
 h1{
@@ -98,4 +99,8 @@ input#submit:hover {
     font-family: 'Pangolin', cursive;
     color: white;
     text-align: center;
+}
+
+#dick {
+    margin-left: 200px;
 }
