@@ -6,36 +6,32 @@
 <TITLE>Gamepjuh</TITLE>
 </HEAD>
 <BODY>
+    
     <h1>Gamepjuh</h1>
     <div id="test">             <!-- Blok waar de game in komt te staan -->
                                             
 <!--                                            Startpagina-->
                 <div id="naam">
-                    <form action="" method="post">
+                    <form action="level.php" method="post">                     <!-- Formulier om naam in te vullen --> 
                     <h2>Naam:</h2>
-                    <input type="text" id="naam"><br>
-                    <input type="button" type="submit" id="submit" value="Start de game">
+                    <input required type="text" name="naam" id="naam"><br>
+                    <input type="submit" name="submit" id="submit" value="Start de game">
                     </form>
                 </div>
-                
     </div>
-
-        <!--
-   <canvas id="test">
-       
-   </canvas>
-    
--->
-
-    
-<?php
-if(isset($_POST["submit"])) {
+                                                
+<!--    PHP Code om de naam op te slaan in een variabele-->
+   <?php
+    if(isset($_POST["submit"])) {
     $naam = $_POST["naam"];
-    echo $naam; 
-}
+    
+    }
 
 
-?>
+?> 
+
+ 
+
     
 </BODY>
 </HTML>

@@ -18,3 +18,9 @@ h1{
 #naam{
     text-align: center;
 }
+img{
+    width: 25%;
+    height: 300px;
+    margin-top: 100px;
+    margin-left: 6.25%;
+}
