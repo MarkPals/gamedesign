@@ -1,10 +1,17 @@
 body{
-    background-color:dodgerblue;
+    background-image: url(web_img/background.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
 }
 
 h1{
     text-align: center;
 }
+
+/**************/
+    /*Game*/
+/**************/
 
 #test{
     margin-top: 5%;
@@ -12,15 +19,67 @@ h1{
     height: 500px;
     margin-left: auto;
     margin-right: auto;
-    background-color: white;
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
 #naam{
     text-align: center;
+    font-family: 'Pangolin', cursive;
 }
-img{
-    width: 25%;
-    height: 300px;
-    margin-top: 100px;
-    margin-left: 6.25%;
+
+.title {
+    color: white;
+    font-family: 'Pangolin', cursive;
 }
+
+input {
+    background-color: rgba(0,0,0,0.1);
+    color: white;
+    border: none;
+}
+
+input#naam {
+    height: 40px;
+    width: 240px;
+    transition: opacity .25s ease-in-out;
+    -webkit-transition: opacity .25s ease-in-out;
+}
+
+input#naam:hover {
+    background-color: rgb(68,68,68);
+    opacity: 0.5;
+}
+
+input#submit {
+    height: 40px;
+    margin-top: 20px;
+    opacity: 1;
+    transition: opacity .25s ease-in-out;
+    -webkit-transition: opacity .25s ease-in-out;
+}
+
+input#submit:hover {
+    background-color: rgb(68,68,68);
+    opacity: 0.5;
+}
+/*/game*/
+
+/**************/
+  /*Credits*/
+/**************/
+.credits {
+    font-family: 'Pangolin', cursive;
+    text-align: center;
+    list-style-type: none;
+}
+
+.credits_title {
+    font-family: 'Pangolin', cursive;
+    text-align: center;
+    margin-left: 4%;
+}
+
+.credits_container {
+    margin-right: 4%; 
+}
+/*/credits*/
