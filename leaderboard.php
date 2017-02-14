@@ -4,7 +4,7 @@
 <META content="text/html; charset=utf-8" http-equiv="Content-Type" />
 <LINK href="lead_style.css" rel="stylesheet" type="text/css" />
 <link href="https://fonts.googleapis.com/css?family=Pangolin" rel="stylesheet">
-<TITLE>SRDA</TITLE>
+<TITLE>Leaderboards</TITLE>
 </HEAD>
 <BODY>
 	<h1 class="title">Steves riding dildo adventure</h1>
