@@ -1,23 +1,37 @@
 <?php
     
 if(isset($_POST["submit"])){
-   
-    $con = mysqli_connect("localhost", "root", "", "game");
- 
+
+    $dbhost = "localhost";
+    $dbname = "game";
+    $user = "root";
+    $pass = "";
+    try {
+        $database = new
+        PDO("mysql:host=$dbhost;dbname=$dbname", $user, $pass);
+        $database->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION );
+        echo "<br>Verbinding gemaakt";
+    } catch(PDOException $e) {
+        echo $e->getMessage();
+        echo "<br>Verbinding niet gemaakt";
+    }
+
     $username = $_POST["username"];
     $score = $_POST["score"];
-    
-    $sql = "INSERT INTO score (Score, Username)
-    VALUES ('" . $score . "', '" . $username . "')";
 
-    if (mysqli_query($con, $sql)) {
-    echo "New record created successfully";
-    } 
-    else {
-    echo "Error: " . $sql . "<br>" . mysqli_error($con);
+
+    $query = "INSERT INTO score (gamescore, username) VALUES (?, ?)";
+
+    $insert = $database->prepare($query);
+    $data = array($score, $username);
+
+    try {
+        $insert->execute($data);
+        echo "<script>alert('Album toegevoegd.');</script>";
+    } catch(PDOException $e) {
+        echo $e->getMessage();
+        echo "<br>Verbinding niet gemaakt";
     }
-    
-    mysqli_close($con);
 }
 
 ?>
