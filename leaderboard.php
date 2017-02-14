@@ -18,20 +18,47 @@
 		<img src="web_img/dick2.gif" style="width: 100px; height: 100px; margin-right: 22%; margin-top: 2.2%; float: right;">
 	</div>
 		<div id="naam">
-			<br><br><h2>Leaderboard!</h2><br><br>
+			<br><br><h2>Leaderboard!</h2><br>
 			<table style="width:100%">
 			  <tr>
 			    <th>Naam</th>
 			    <th>Score</th> 
 			  </tr>
-			  <tr>
-			    <td>Jill</td>
-			    <td>30</td> 
-			  </tr>
-			  <tr>
-			    <td>Eve</td>
-			    <td>30</td> 
-			  </tr>
+                <?php
+                $dbhost = "localhost";
+                $dbname = "game";
+                $user = "root";
+                $pass = "";
+                try {
+                    $database = new
+                    PDO("mysql:host=$dbhost;dbname=$dbname", $user, $pass);
+                    $database->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION );
+//                    echo "<br>Verbinding gemaakt";
+                } catch(PDOException $e) {
+                    echo $e->getMessage();
+                    echo "<br>Verbinding niet gemaakt";
+                }
+
+                $query = "SELECT * FROM score ORDER BY gamescore DESC LIMIT 10";
+
+                $insert = $database->prepare($query);
+                $insert->setFetchMode(PDO::FETCH_ASSOC);
+                try {
+                    $insert->execute(array());
+//                    echo "<script>alert('leaderboard geladen.');</script>";
+                } catch(PDOException $e) {
+                    echo $e->getMessage();
+                    echo "<script>alert('Verbinding niet gemaakt');</script>";
+                }
+
+                foreach ($insert as $ins) {
+                    echo "<tr>
+                                <td>" . $ins['username'] . "</td>
+                                <td>" . $ins['gamescore'] ."</td>
+                          </tr>";
+                }
+
+                ?>
 			</table>
 			<form action="index.php">
 				<input name="Terug" type="button"  onclick="location.href='index.php'" id="terug" value="terug">
@@ -40,13 +67,6 @@
     </div>
                                                 
 <!--    PHP Code om de naam op te slaan in een variabele-->
-   <?php
-    if(isset($_POST["submit"])) {
-    $naam = $_POST["naam"];
-    
-    }
 
-
-?>
 </BODY>
 </HTML>
