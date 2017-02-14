@@ -20,6 +20,10 @@ h1{
     /*Game*/
 /**************/
 
+@keyframes animatedBackground {
+    to { background-position-x: 99999999%; }
+}
+
 #test{
     margin-top: 5%;
     width: 60%;
@@ -69,6 +73,9 @@ input#submit:hover {
     background-color: rgb(68,68,68);
     opacity: 0.5;
 }
+
+
+
 /*/game*/
 
 /**************/
