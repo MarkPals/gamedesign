@@ -194,7 +194,12 @@
 //        to stop the block
             for (i = 0; i < myObstacles.length; i += 1) {
                 if (myGamePiece.crashWith(myObstacles[i])) {
-                    alert("Game over")
+                    alert("Game over");
+                    alert("Your score:" + myGameArea.frameNo);
+                    document.write("<form action='gameover.php method='POST'>");
+                    document.write("<p class='score'>Score" + myGameArea.frameNo + "</p>");
+                    document.write("<input type='button' name='submit' value='verzend score'>")
+                    document.write("</form>");
                     window.location = "gameover.php";
                     return;
                 }

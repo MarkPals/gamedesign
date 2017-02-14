@@ -13,9 +13,6 @@
 <input type="button" onclick="location.href='index.php'" name="leaderboard" id="leaderboard" value="Retry">
 </div>
 <?php 
-if(isset($_POST["submit"])) {
-    $naam = $_POST["naam"];
-    
-    }
+    echo $_POST['score'];
 ?>
 </HTML>
