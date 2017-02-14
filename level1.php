@@ -33,7 +33,7 @@
 <p class="controls">Press space to jump</p>
 <div id="test">
     <canvas id="gamecanvas"></canvas>
-<!--    <canvas id="canvas"></canvas>-->
+
 
     <script>
 
@@ -69,7 +69,7 @@
                 window.addEventListener('keyup', function (e) {
                     myGameArea.key = false;
                 })
-                this.interval = setInterval(updateGameArea, 20);
+                this.interval = setInterval(updateGameArea, 5.5);
             },
             clear : function() {
                 this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -148,11 +148,11 @@
                 minGap = 50;
                 maxGap = 200;
                 gap = Math.floor(Math.random()*(maxGap-minGap+1)+minGap);
-                Obstacle1.push(new component(10, height, "green", x, 0));
-                Obstacle1.push(new component(10, x - height - gap, "green", x, height + gap));
-                Obstacle2.update();
-//            myObstacles.push(new component(10, height, "green", x, 0));
-//            myObstacles.push(new component(10, x - height - gap, "green", x, height + gap));
+//                Obstacle1.push(new component(10, height, "green", x, 0));
+//                Obstacle1.push(new component(10, x - height - gap, "green", x, height + gap));
+//                Obstacle2.update();
+//                myObstacles.push(new component(20, 20, "green", x, height - gap));
+                myObstacles.push(new component(20, 20, "red", x, 250));
             }
             for (i = 0; i < myObstacles.length; i += 1) {
                 myObstacles[i].x += -1;
@@ -174,13 +174,13 @@
         }
 
         function accelerate() {
-            myGamePiece.gravity = 1.6;
+            myGamePiece.gravity = 0.2;
         }
 
         function jump() {
             if(myGamePiece.y > 150) {
-                myGamePiece.gravity = -0.8;
-                setTimeout(accelerate, 250);
+                myGamePiece.gravity = -0.1;
+                setTimeout(accelerate, 100);
             }
         }
 
