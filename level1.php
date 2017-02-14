@@ -45,6 +45,8 @@
         var Obstacle1;
         var Obstacle2;
 
+        var audio = new Audio('theme.mp3');
+
 
         function startGame() {
             // myGamePiece = new component(30, 30, "red", 60, 120, "", "sprites/sprite.png");
@@ -54,6 +56,7 @@
             // Obstacle1  = new component(50, 25, "green", 200, 245);
             // Obstacle2  = new component(50, 25, "green", 300, 230);
             myGameArea.start();
+            audio.play();
         }
 
         var myGameArea = {
@@ -177,7 +180,8 @@
 //        to stop the block
             for (i = 0; i < myObstacles.length; i += 1) {
                 if (myGamePiece.crashWith(myObstacles[i])) {
-                    
+                    alert("Game over")
+                    window.location = "gameover.php";
                     return;
                 }
             }
