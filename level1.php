@@ -6,19 +6,35 @@
     <TITLE>Gamepjuh</TITLE>
 </HEAD>
 <style>
-    canvas {
-        background-color: #f1f1f1;
+    #canvas, #gamecanvas {
         border: 1px solid black;
         position: absolute;
         left: 25%;
-        top: 35%;
+        top: 40%;
+        background: url("web_img/background_small.png");
+        background-size: cover;
+        background-position: 0px 0px;
+        background-repeat: repeat-x;
+
+        animation: animatedBackground 200000s linear infinite;
     }
+
+    /*#canvas {*/
+        /*z-index: 999;*/
+    /*}*/
+
+    /*#gamecanvas {*/
+        /*z-index: 1;*/
+    /*}*/
 </style>
 <BODY onload="startGame()">
 
 <h1>Gamepjuh</h1>
 <p class="controls">Press space to jump</p>
 <div id="test">
+    <canvas id="gamecanvas"></canvas>
+<!--    <canvas id="canvas"></canvas>-->
+
     <script>
 
         var myGamePiece;
@@ -30,16 +46,16 @@
 
 
         function startGame() {
-            myGamePiece = new component(30, 30, "red", 10, 120);
+            myGamePiece = new component(30, 30, "red", 60, 120, "", "sprites/sprite.png");
             myGamePiece.gravity = 0.05;
-            myScore = new component("30px", "Consolas", "black", 280, 40, "text");
+            myScore = new component("30px", "Consolas", "black", 480, 40, "text");
             Obstacle1  = new component(50, 25, "green", 200, 245);
             Obstacle2  = new component(50, 25, "green", 300, 230);
             myGameArea.start();
         }
 
         var myGameArea = {
-            canvas : document.createElement("canvas"),
+            canvas : document.getElementById("gamecanvas"),
             start : function() {
                 this.canvas.width = 680;
                 this.canvas.height = 270;
@@ -60,7 +76,8 @@
             }
         }
 
-        function component(width, height, color, x, y, type) {
+        function component(width, height, color, x, y, type, image) {
+            this.image = image;
             this.type = type;
             this.score = 0;
             this.width = width;
@@ -79,6 +96,7 @@
                     ctx.fillText(this.text, this.x, this.y);
                 } else {
                     ctx.fillStyle = color;
+                    myGamePiece.background = this.image;
                     ctx.fillRect(this.x, this.y, this.width, this.height);
                 }
             }
@@ -165,32 +183,30 @@
                 setTimeout(accelerate, 250);
             }
         }
-    </script>
 
-    <script>
-        var canvas = document.getElementsByTagName("canvas");
-        var ctx = canvas.getContext("2d");
-        canvas.width = 1600;
-        canvas.height = 900;
-
-        //draw Image
-        var velocity=100;
-        var bgImage = new Image();
-        bgImage.addEventListener('load',drawImage,false);
-        bgImage.src = "hoi.jpg";
-        function drawImage(time){
-            var framegap=time-lastRepaintTime;
-            lastRepaintTime=time;
-            var translateX=velocity*(framegap/1000);
-            ctx.clearRect(0,0,canvas.width,canvas.height);
-            var pattern=ctx.createPattern(bgImage,"repeat-x");
-            ctx.fillStyle=pattern;
-            ctx.rect(translateX,0,bgImage.width,bgImage.height);
-            ctx.fill();
-            ctx.translate(-translateX,0);
-            requestAnimationFrame(drawImage);
-        }
-        var lastRepaintTime=window.performance.now();
+//        var canvas = document.getElementById("canvas");
+//        var ctx = canvas.getContext("2d");
+//        canvas.width = 680;
+//        canvas.height = 270;
+//
+//        //draw Image
+//        var velocity=100;
+//        var bgImage = new Image();
+//        bgImage.addEventListener('load',drawImage,false);
+//        bgImage.src = "sprites/hoi.jpg";
+//        function drawImage(time){
+//            var framegap=time-lastRepaintTime;
+//            lastRepaintTime=time;
+//            var translateX=velocity*(framegap/1000);
+//            ctx.clearRect(0,0,canvas.width,canvas.height);
+//            var pattern=ctx.createPattern(bgImage,"repeat-x");
+//            ctx.fillStyle=pattern;
+//            ctx.rect(translateX,0,bgImage.width,bgImage.height);
+//            ctx.fill();
+//            ctx.translate(-translateX,0);
+//            requestAnimationFrame(drawImage);
+//        }
+//        var lastRepaintTime=window.performance.now();
     </script>
 </div>
 
