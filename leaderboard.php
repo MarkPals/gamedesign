@@ -21,8 +21,10 @@
 			<br><br><h2>Leaderboard!</h2><br>
 			<table style="width:100%">
 			  <tr>
+                  <th>Plaats</th>
 			    <th>Naam</th>
-			    <th>Score</th> 
+			    <th>Score</th>
+
 			  </tr>
                 <?php
                 $dbhost = "localhost";
@@ -50,9 +52,11 @@
                     echo $e->getMessage();
                     echo "<script>alert('Verbinding niet gemaakt');</script>";
                 }
-
+                $i = 0;
                 foreach ($insert as $ins) {
+                    $i++;
                     echo "<tr>
+                                <td>$i.</td>
                                 <td>" . $ins['username'] . "</td>
                                 <td>" . $ins['gamescore'] ."</td>
                           </tr>";
