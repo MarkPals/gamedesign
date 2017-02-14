@@ -18,7 +18,7 @@
 		<img src="web_img/dick2.gif" style="width: 100px; height: 100px; margin-right: 22%; margin-top: 2.2%; float: right;">
 	</div>
 		<div id="naam">
-			<form action="level.php" method="post">                     <!-- Formulier om naam in te vullen --> 
+			<form action="level1.php" method="post">                     <!-- Formulier om naam in te vullen --> 
 				<h2>Player name:</h2>
                 <input required type="text" name="naam" id="naam"><br>
                 <input type="submit" name="submit" id="submit" value="Start game">

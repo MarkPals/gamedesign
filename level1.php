@@ -84,8 +84,8 @@
 
         var imageRepository = new function() {
             //define images
-            this.player = new Image("kaas");
-            this.block = new Image();
+            this.player = new Image();
+            this.block_deadly = new Image();
 
             //Ensure all images have been loaded before game start
             var numImages = 2;
@@ -101,13 +101,13 @@
             this.player.onload = function () {
                 imageLoaded();
             }
-            this.block.onLoad = function () {
+            this.block_deadly.onLoad = function () {
                 imageLoaded();
             }
 
             //Set image src
             this.player.src = "sprites/sprite.png";
-            this.block.src = "sprites/spikes.png";
+            this.block_deadly.src = "sprites/spike.png";
 
         }
 
@@ -130,6 +130,9 @@
                     ctx.fillText(this.text, this.x, this.y);
                 }else {
                     if (this.type == "object") {
+                        ctx.save
+                        ctx.drawImage(imageRepository.block_deadly, this.x, this.y, this.width, this.height);
+                        ctx.restore
                         ctx.fillStyle = color;
                         ctx.fillRect(this.x, this.y, this.width, this.height); 
                     }else {
@@ -174,6 +177,7 @@
 //        to stop the block
             for (i = 0; i < myObstacles.length; i += 1) {
                 if (myGamePiece.crashWith(myObstacles[i])) {
+                    
                     return;
                 }
             }
@@ -191,7 +195,7 @@
 //                Obstacle1.push(new component(10, x - height - gap, "green", x, height + gap));
 //                Obstacle2.update();
 //                myObstacles.push(new component(20, 20, "green", x, height - gap));
-                myObstacles.push(new component(20, 20, "blue", x, 250, "object"));
+                myObstacles.push(new component(20, 20, "transparent", x, 250, "object"));
             }
             for (i = 0; i < myObstacles.length; i += 1) {
                 myObstacles[i].x += -1;
@@ -210,6 +214,12 @@
         function drawPlayer() {
             ctx.save
             ctx.drawImage(player, this.x, this.y);
+            ctx.restore
+        }
+
+        function drawBlock_deadly() {
+            ctx.save
+            ctx.drawImage(block_deadly, this.x, this.y);
             ctx.restore
         }
 
