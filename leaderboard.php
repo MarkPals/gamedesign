@@ -2,7 +2,7 @@
 <HTML>
 <HEAD>
 <META content="text/html; charset=utf-8" http-equiv="Content-Type" />
-<LINK href="style.css" rel="stylesheet" type="text/css" />
+<LINK href="lead_style.css" rel="stylesheet" type="text/css" />
 <link href="https://fonts.googleapis.com/css?family=Pangolin" rel="stylesheet">
 <TITLE>SRDA</TITLE>
 </HEAD>
@@ -18,23 +18,24 @@
 		<img src="web_img/dick2.gif" style="width: 100px; height: 100px; margin-right: 22%; margin-top: 2.2%; float: right;">
 	</div>
 		<div id="naam">
-			<form action="level.php" method="post">                     <!-- Formulier om naam in te vullen --> 
-				<h2>Player name:</h2>
-                <input required type="text" name="naam" id="naam"><br>
-                <input type="submit" name="submit" id="submit" value="Start game">
-                <input type="button" onclick="location.href='leaderboard.php'" name="leaderboard" id="leaderboard" value="leaderboard">
-            </form> 
-            <div class="credits_container">
-    			<p class="credits_title">Credits</p>
-    				<ul class="credits">
-	    				<li>Niels van Faassen</li>
-	    				<li>Mark Pals</li>
-					    <li>Ramon Dubbink</li>
-					    <li>Lars Hofsink</li>
-					    <li>Jeroen Mager</li>
-					    <li>Stijn ter Keurs</li>
-    				</ul>
-    		</div>
+			<br><br><h2>Leaderboard!</h2><br><br>
+			<table style="width:100%">
+			  <tr>
+			    <th>Naam</th>
+			    <th>Score</th> 
+			  </tr>
+			  <tr>
+			    <td>Jill</td>
+			    <td>30</td> 
+			  </tr>
+			  <tr>
+			    <td>Eve</td>
+			    <td>30</td> 
+			  </tr>
+			</table>
+			<form action="index.php">
+				<input name="Terug" type="button"  onclick="location.href='index.php'" id="terug" value="terug">
+			</form>
         </div>
     </div>
                                                 

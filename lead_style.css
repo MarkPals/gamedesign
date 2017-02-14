@@ -45,19 +45,7 @@ input {
     border: none;
 }
 
-input#naam {
-    height: 40px;
-    width: 240px;
-    transition: opacity .25s ease-in-out;
-    -webkit-transition: opacity .25s ease-in-out;
-}
-
-input#naam:hover {
-    background-color: rgb(68,68,68);
-    opacity: 0.5;
-}
-
-input#submit {
+input#terug {
     height: 40px;
     margin-top: 20px;
     opacity: 1;
@@ -65,23 +53,12 @@ input#submit {
     -webkit-transition: opacity .25s ease-in-out;
 }
 
-input#submit:hover {
+input#terug:hover {
     background-color: rgb(68,68,68);
     opacity: 0.5;
 }
 
-input#leaderboard {
-    height: 40px;
-    margin-top: 20px;
-    opacity: 1;
-    transition: opacity .25s ease-in-out;
-    -webkit-transition: opacity .25s ease-in-out;
-}
 
-input#leaderboard:hover {
-    background-color: rgb(68,68,68);
-    opacity: 0.5;
-}
 /*/game*/
 
 /**************/
@@ -116,4 +93,36 @@ input#leaderboard:hover {
 
 #dick {
     margin-left: 200px;
+}
+
+
+/* Tables */
+
+table {
+    width:100%;
+    text-align: center;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align: center;
+}
+th, td {
+    padding: 5px;
+    text-align: left;
+    text-align: center;
+    
+}
+table#t01 tr:nth-child(even) {
+    background-color: #eee;
+    text-align: center;
+}
+table#t01 tr:nth-child(odd) {
+   background-color:#fff;
+   text-align: center;
+}
+table#t01 th {
+    background-color: black;
+    color: white;
+    text-align: center;
 }
