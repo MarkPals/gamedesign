@@ -8,6 +8,7 @@
 <BODY>
     
     <h1>Gamepjuh</h1>
+    <p class="controls">Press space to jump</p>
     <div id="test">             <!-- Blok waar de game in komt te staan -->
                                             
 <!--                                            levelpagina-->
