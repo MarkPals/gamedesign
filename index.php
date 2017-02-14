@@ -7,7 +7,7 @@
 <TITLE>SRDA</TITLE>
 </HEAD>
 <BODY>
-	<h1 class="title">Steves riding dildo adventure</h1>
+	<h1 class="title">Steve's riding dildo adventure</h1>
     <div id="test">             <!-- Blok waar de game in komt te staan -->
                                             
 <!--                                            Startpagina-->
