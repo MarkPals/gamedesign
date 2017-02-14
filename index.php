@@ -33,6 +33,9 @@
 					    <li>Lars Hofsink</li>
 					    <li>Jeroen Mager</li>
 					    <li>Stijn ter Keurs</li>
+					    <br>
+					    <li>4 Koppen koffie</li>
+					    <li>3 blikjes monster</li>
     				</ul>
     		</div>
         </div>

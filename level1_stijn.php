@@ -6,36 +6,19 @@
     <TITLE>Gamepjuh</TITLE>
 </HEAD>
 <style>
-    #canvas, #gamecanvas {
+    canvas {
+        background-color: #f1f1f1;
         border: 1px solid black;
         position: absolute;
         left: 25%;
-        top: 40%;
-        background: url("web_img/background_small.png");
-        background-size: cover;
-        background-position: 0px 0px;
-        background-repeat: repeat-x;
-
-        animation: animatedBackground 200000s linear infinite;
-        -webkit-animation: animatedBackground 200000s linear infinite;
+        top: 35%;
     }
-
-    /*#canvas {*/
-        /*z-index: 999;*/
-    /*}*/
-
-    /*#gamecanvas {*/
-        /*z-index: 1;*/
-    /*}*/
 </style>
 <BODY onload="startGame()">
-
+<img src="sprites/sprite.png" id="sprite" hidden>
 <h1>Gamepjuh</h1>
 <p class="controls">Press space to jump</p>
 <div id="test">
-    <canvas id="gamecanvas"></canvas>
-
-
     <script>
 
         var myGamePiece;
@@ -45,19 +28,23 @@
         var Obstacle1;
         var Obstacle2;
 
+        // var player = new Image()
+        // player.src = "sprites/sprite.png"
+
 
         function startGame() {
-            // myGamePiece = new component(30, 30, "red", 60, 120, "", "sprites/sprite.png");
             myGamePiece = new component(30, 30, "transparent", 10, 120);
+            // myGamePiece = document.getElementById("sprite");
+            // myGamePiece.src = "sprites/sprite.png";
             myGamePiece.gravity = 0.05;
-            myScore = new component("30px", "Consolas", "black", 480, 40, "text");
-            // Obstacle1  = new component(50, 25, "green", 200, 245);
-            // Obstacle2  = new component(50, 25, "green", 300, 230);
+            myScore = new component("30px", "Consolas", "black", 280, 40, "text");
+            Obstacle1  = new component(30, 25, "red", 200, 245);
+            Obstacle2  = new component(50, 25, "black", 300, 230);
             myGameArea.start();
         }
 
         var myGameArea = {
-            canvas : document.getElementById("gamecanvas"),
+            canvas : document.createElement("canvas"),
             start : function() {
                 this.canvas.width = 680;
                 this.canvas.height = 270;
@@ -71,20 +58,21 @@
                 window.addEventListener('keyup', function (e) {
                     myGameArea.key = false;
                 })
-                this.interval = setInterval(updateGameArea, 5.5);
+                this.interval = setInterval(updateGameArea, 2);
             },
             clear : function() {
                 this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
             }
         }
 
-         // ************
+
+        // ************
             // sprites
         // ************
 
         var imageRepository = new function() {
             //define images
-            this.player = new Image("kaas");
+            this.player = new Image();
             this.block = new Image();
 
             //Ensure all images have been loaded before game start
@@ -101,17 +89,13 @@
             this.player.onload = function () {
                 imageLoaded();
             }
-            this.block.onLoad = function () {
-                imageLoaded();
-            }
 
             //Set image src
-            this.player.src = "sprites/sprite.png";
-            this.block.src = "sprites/spikes.png";
+            this.player.src = "sprites/sprite.png"
 
         }
 
-        function component(width, height, color, x, y, type, image) {
+        function component(width, height, color, x, y, type) {
             this.type = type;
             this.score = 0;
             this.width = width;
@@ -128,17 +112,15 @@
                     ctx.font = this.width + " " + this.height;
                     ctx.fillStyle = color;
                     ctx.fillText(this.text, this.x, this.y);
-                }else {
-                    if (this.type == "object") {
-                        ctx.fillStyle = color;
-                        ctx.fillRect(this.x, this.y, this.width, this.height); 
-                    }else {
-                        ctx.save
-                        ctx.drawImage(imageRepository.player, this.x, this.y, this.width, this.height);
-                        ctx.restore
-                    }
+                } else {
+                    ctx.fillStyle = color;
+                    ctx.fillRect(this.x, this.y, this.width, this.height);
+                    ctx.save
+                    ctx.drawImage(imageRepository.player, this.x, this.y, this.width, this.height);
+                    ctx.restore
                 }
             }
+        
             this.newPos = function() {
                 this.gravitySpeed += this.gravity;
                 this.x += this.speedX;
@@ -181,17 +163,17 @@
             myGameArea.frameNo += 1;
             if (myGameArea.frameNo == 1 || everyinterval(150)) {
                 x = myGameArea.canvas.width;
-                minHeight = 20;
-                maxHeight = 200;
+                minHeight = 100;
+                maxHeight = 100;
                 height = Math.floor(Math.random()*(maxHeight-minHeight+1)+minHeight);
                 minGap = 50;
                 maxGap = 200;
                 gap = Math.floor(Math.random()*(maxGap-minGap+1)+minGap);
-//                Obstacle1.push(new component(10, height, "green", x, 0));
-//                Obstacle1.push(new component(10, x - height - gap, "green", x, height + gap));
-//                Obstacle2.update();
-//                myObstacles.push(new component(20, 20, "green", x, height - gap));
-                myObstacles.push(new component(20, 20, "blue", x, 250, "object"));
+                //Obstacle1.push(new component(10, height, "green", x, 0));
+                //Obstacle1.push(new component(10, x - height - gap, "green", x, height + gap));
+                //Obstacle2.update();
+	            // myObstacles.push(new component(10, height, "green", x, 0));
+	            myObstacles.push(new component(10, x - height - gap, "blue", x, height + gap));
             }
             for (i = 0; i < myObstacles.length; i += 1) {
                 myObstacles[i].x += -1;
@@ -219,40 +201,42 @@
         }
 
         function accelerate() {
-            myGamePiece.gravity = 0.2;
+            myGamePiece.gravity = 0.3;
         }
 
         function jump() {
             if(myGamePiece.y > 150) {
-                myGamePiece.gravity = -0.1;
-                setTimeout(accelerate, 100);
+                myGamePiece.gravity = -0.4;
+                setTimeout(accelerate, 50);
             }
         }
-
-//        var canvas = document.getElementById("canvas");
-//        var ctx = canvas.getContext("2d");
-//        canvas.width = 680;
-//        canvas.height = 270;
-//
-//        //draw Image
-//        var velocity=100;
-//        var bgImage = new Image();
-//        bgImage.addEventListener('load',drawImage,false);
-//        bgImage.src = "sprites/hoi.jpg";
-//        function drawImage(time){
-//            var framegap=time-lastRepaintTime;
-//            lastRepaintTime=time;
-//            var translateX=velocity*(framegap/1000);
-//            ctx.clearRect(0,0,canvas.width,canvas.height);
-//            var pattern=ctx.createPattern(bgImage,"repeat-x");
-//            ctx.fillStyle=pattern;
-//            ctx.rect(translateX,0,bgImage.width,bgImage.height);
-//            ctx.fill();
-//            ctx.translate(-translateX,0);
-//            requestAnimationFrame(drawImage);
-//        }
-//        var lastRepaintTime=window.performance.now();
     </script>
+
+<!--     <script>
+        var canvas = document.getElementsByTagName("canvas");
+        var ctx = canvas.getContext("2d");
+        canvas.width = 1600;
+        canvas.height = 900;
+
+        //draw Image
+        var velocity=100;
+        var bgImage = new Image();
+        bgImage.addEventListener('load',drawImage,false);
+        bgImage.src = "hoi.jpg";
+        function drawImage(time){
+            var framegap=time-lastRepaintTime;
+            lastRepaintTime=time;
+            var translateX=velocity*(framegap/1000);
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            var pattern=ctx.createPattern(bgImage,"repeat-x");
+            ctx.fillStyle=pattern;
+            ctx.rect(translateX,0,bgImage.width,bgImage.height);
+            ctx.fill();
+            ctx.translate(-translateX,0);
+            requestAnimationFrame(drawImage);
+        }
+        var lastRepaintTime=window.performance.now();
+    </script> -->
 </div>
 
 
