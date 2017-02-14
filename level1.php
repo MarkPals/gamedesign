@@ -41,11 +41,13 @@
         var myGamePiece;
         var myObstacles = [];
         var myScore;
+        var myGrass = [];
 
         var Obstacle1;
         var Obstacle2;
 
         var audio = new Audio('theme.mp3');
+        var jumpaudio = new Audio('jump.mp3')
 
 
         function startGame() {
@@ -55,7 +57,9 @@
             myScore = new component("30px", "Consolas", "black", 480, 40, "text");
             // Obstacle1  = new component(50, 25, "green", 200, 245);
             // Obstacle2  = new component(50, 25, "green", 300, 230);
+            myGrass = new component(20, 20, "transparent", 10, 120, "object2");
             myGameArea.start();
+            audio.volume = 0.2;
             audio.play();
         }
 
@@ -68,6 +72,7 @@
                 document.body.insertBefore(this.canvas, document.body.childNodes[0]);
                 this.frameNo = 0;
                 window.addEventListener('keydown', function (e) {
+                    jumpaudio.play();
                     myGameArea.key = e.keyCode;
                     press++;
                 })
@@ -89,9 +94,10 @@
             //define images
             this.player = new Image();
             this.block_deadly = new Image();
+            this.grass = new Image();
 
             //Ensure all images have been loaded before game start
-            var numImages = 2;
+            var numImages = 3;
             var numLoaded = 0;
             function imageLoaded() {
                 numLoaded++
@@ -107,10 +113,14 @@
             this.block_deadly.onLoad = function () {
                 imageLoaded();
             }
+            this.grass.onLoad = function () {
+                imageLoaded();
+            }
 
             //Set image src
             this.player.src = "sprites/sprite.png";
             this.block_deadly.src = "sprites/spike.png";
+            this.grass.src = "sprites/grass.png";
 
         }
 
@@ -141,6 +151,10 @@
                     }else {
                         ctx.save
                         ctx.drawImage(imageRepository.player, this.x, this.y, this.width, this.height);
+                        ctx.restore
+                    }if (this.type == "object2") {
+                        ctx.save
+                        ctx.drawImage(imageRepository.grass, this.x, this.y, this.width, this.height);
                         ctx.restore
                     }
                 }
@@ -199,11 +213,21 @@
 //                Obstacle1.push(new component(10, x - height - gap, "green", x, height + gap));
 //                Obstacle2.update();
 //                myObstacles.push(new component(20, 20, "green", x, height - gap));
+
+//              Push new objects into game, specifying height, width and cords. User height or gap for random cords
                 myObstacles.push(new component(20, 20, "transparent", x, 250, "object"));
+                myGrass.push(new component(10, 10, "black", x, 200, "object"));
             }
+
+            // Note to self (stijn) Add for loop for extra objects w / w/o collision
+                //do not touch plz
             for (i = 0; i < myObstacles.length; i += 1) {
                 myObstacles[i].x += -1;
                 myObstacles[i].update();
+            }
+            for (i = 0; i < myGrass.length; i += 1) {
+                myGrass[i].x += -1;
+                myGrass[i].update();
             }
 
             if (myGameArea.key && myGameArea.key == 32) {
@@ -224,6 +248,12 @@
         function drawBlock_deadly() {
             ctx.save
             ctx.drawImage(block_deadly, this.x, this.y);
+            ctx.restore
+        }
+
+        function drawGrass() {
+            ctx.save
+            ctx.drawImage(grass, this.x, this.y);
             ctx.restore
         }
 
