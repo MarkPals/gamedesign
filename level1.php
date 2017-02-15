@@ -6,27 +6,19 @@
     <TITLE>Gamepjuh</TITLE>
 </HEAD>
 <style>
-    #canvas, #gamecanvas {
+    #gamecanvas {
         border: 1px solid black;
         position: absolute;
         left: 25%;
         top: 40%;
         background: url("web_img/background_small.png");
         background-size: cover;
-        background-position: 0px 0px;
+        background-position: 0 0;
         background-repeat: repeat-x;
 
         animation: animatedBackground 200000s linear infinite;
         -webkit-animation: animatedBackground 200000s linear infinite;
     }
-
-    /*#canvas {*/
-        /*z-index: 999;*/
-    /*}*/
-
-    /*#gamecanvas {*/
-        /*z-index: 1;*/
-    /*}*/
 </style>
 <BODY onload="startGame()">
 
@@ -43,11 +35,9 @@
         var myScore;
         var myGrass = [];
 
-        var Obstacle1;
-        var Obstacle2;
 
         var audio = new Audio('theme.mp3');
-        var jumpaudio = new Audio('jump.mp3')
+        var jumpaudio = new Audio('jump.mp3');
 
 
         function startGame() {
@@ -55,8 +45,6 @@
             myGamePiece = new component(30, 30, "transparent", 10, 120);
             myGamePiece.gravity = 0.05;
             myScore = new component("30px", "Consolas", "black", 480, 40, "text");
-            // Obstacle1  = new component(50, 25, "green", 200, 245);
-            // Obstacle2  = new component(50, 25, "green", 300, 230);
             myGrass = new component(20, 20, "transparent", 10, 120, "object2");
             myGameArea.start();
             audio.volume = 0.2;
@@ -75,16 +63,16 @@
                     jumpaudio.play();
                     myGameArea.key = e.keyCode;
                     press++;
-                })
+                });
                 window.addEventListener('keyup', function (e) {
                     myGameArea.key = false;
-                })
+                });
                 this.interval = setInterval(updateGameArea, 5.5);
             },
             clear : function() {
                 this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
             }
-        }
+        };
 
          // ************
             // sprites
@@ -100,7 +88,7 @@
             var numImages = 3;
             var numLoaded = 0;
             function imageLoaded() {
-                numLoaded++
+                numLoaded++;
                 if (numLoaded === numImages) {
                     window.init;
                 } else {
@@ -109,24 +97,23 @@
             }
             this.player.onload = function () {
                 imageLoaded();
-            }
+            };
             this.block_deadly.onLoad = function () {
                 imageLoaded();
-            }
+            };
             this.grass.onLoad = function () {
                 imageLoaded();
-            }
+            };
 
             //Set image src
             this.player.src = "sprites/sprite.png";
             this.block_deadly.src = "sprites/spike.png";
             this.grass.src = "sprites/grass.png";
 
-        }
+        };
 
-        function component(width, height, color, x, y, type, image) {
+        function component(width, height, color, x, y, type) {
             this.type = type;
-            this.score = 0;
             this.width = width;
             this.height = height;
             this.speedX = 0;
@@ -143,35 +130,35 @@
                     ctx.fillText(this.text, this.x, this.y);
                 }else {
                     if (this.type == "object") {
-                        ctx.save
+                        ctx.save;
                         ctx.drawImage(imageRepository.block_deadly, this.x, this.y, this.width, this.height);
-                        ctx.restore
+                        ctx.restore;
                         ctx.fillStyle = color;
                         ctx.fillRect(this.x, this.y, this.width, this.height); 
                     }else {
-                        ctx.save
+                        ctx.save;
                         ctx.drawImage(imageRepository.player, this.x, this.y, this.width, this.height);
-                        ctx.restore
+                        ctx.restore;
                     }if (this.type == "object2") {
-                        ctx.save
+                        ctx.save;
                         ctx.drawImage(imageRepository.grass, this.x, this.y, this.width, this.height);
-                        ctx.restore
+                        ctx.restore;
                     }
                 }
-            }
+            };
             this.newPos = function() {
                 this.gravitySpeed += this.gravity;
                 this.x += this.speedX;
                 this.y += this.speedY + this.gravitySpeed;
                 this.hitBottom();
-            }
+            };
             this.hitBottom = function() {
                 var rockbottom = myGameArea.canvas.height - this.height;
                 if (this.y > rockbottom) {
                     this.y = rockbottom;
                     this.gravitySpeed = 0;
                 }
-            }
+            };
             this.crashWith = function(otherobj) {
                 var myleft = this.x;
                 var myright = this.x + (this.width);
@@ -181,10 +168,34 @@
                 var otherright = otherobj.x + (otherobj.width);
                 var othertop = otherobj.y;
                 var otherbottom = otherobj.y + (otherobj.height);
-                var crash = true;
-                if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
-                    crash = false;
+                var crash = false;
+
+                var outsideothertop = othertop - 2;
+                var outsideotherbottom = otherbottom + 2;
+                var insideotherleft = otherleft  + 2;
+                var insideotherright = otherright + 2;
+
+                if(((mybottom > outsideothertop) && (mybottom < otherbottom)) && ((myleft > insideotherleft) && (myleft < insideotherright)) ||
+                    ((mybottom > outsideothertop) && (mybottom < otherbottom)) && ((myright > insideotherleft) && (myright < insideotherright))) {
+                    mybottom = outsideothertop;
+                    this.gravitySpeed = -0.1;
                 }
+
+                if(((mytop > othertop) && (mytop < outsideotherbottom)) && ((myleft > insideotherleft) && (myleft < insideotherright)) ||
+                    ((mytop > othertop) && (mytop < outsideotherbottom)) && ((myright > insideotherleft) && (myright < insideotherright))) {
+                    mytop = outsideotherbottom;
+                    this.gravitySpeed = 1;
+                    this.gravity = 0;
+                }
+
+                if(((mybottom >othertop) && (mybottom < otherbottom)) && ((myleft > otherleft) && (myleft < otherright)) ||
+                    ((mybottom >othertop) && (mybottom < otherbottom)) && ((myright > otherleft) && (myright < otherright)) ||
+                    ((mytop > othertop) && (mytop < otherbottom)) && ((myleft > otherleft) && (myleft < otherright)) ||
+                    ((mytop > othertop) && (mytop < otherbottom)) && ((myright > otherleft) && (myright < otherright))) {
+                    crash = true;
+                }
+
+
                 return crash;
             }
         }
@@ -244,22 +255,16 @@
             myGamePiece.update();
         }
 
-        function drawPlayer() {
-            ctx.save
-            ctx.drawImage(player, this.x, this.y);
-            ctx.restore
-        }
-
         function drawBlock_deadly() {
-            ctx.save
+            ctx.save;
             ctx.drawImage(block_deadly, this.x, this.y);
-            ctx.restore
+            ctx.restore;
         }
 
         function drawGrass() {
-            ctx.save
+            ctx.save;
             ctx.drawImage(grass, this.x, this.y);
-            ctx.restore
+            ctx.restore;
         }
 
         function everyinterval(n) {
@@ -272,35 +277,14 @@
         }
 
         function jump() {
-            if(myGamePiece.y > 150) {
-                myGamePiece.gravity = -0.1;
-                setTimeout(accelerate, 100);
+            if(myGamePiece.y > 120) {
+                if(myGamePiece.gravitySpeed < 1) {
+                    myGamePiece.gravitySpeed = -4;
+                    setTimeout(accelerate, 200);
+                }
             }
         }
 
-//        var canvas = document.getElementById("canvas");
-//        var ctx = canvas.getContext("2d");
-//        canvas.width = 680;
-//        canvas.height = 270;
-//
-//        //draw Image
-//        var velocity=100;
-//        var bgImage = new Image();
-//        bgImage.addEventListener('load',drawImage,false);
-//        bgImage.src = "sprites/hoi.jpg";
-//        function drawImage(time){
-//            var framegap=time-lastRepaintTime;
-//            lastRepaintTime=time;
-//            var translateX=velocity*(framegap/1000);
-//            ctx.clearRect(0,0,canvas.width,canvas.height);
-//            var pattern=ctx.createPattern(bgImage,"repeat-x");
-//            ctx.fillStyle=pattern;
-//            ctx.rect(translateX,0,bgImage.width,bgImage.height);
-//            ctx.fill();
-//            ctx.translate(-translateX,0);
-//            requestAnimationFrame(drawImage);
-//        }
-//        var lastRepaintTime=window.performance.now();
     </script>
 </div>
 
