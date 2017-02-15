@@ -160,15 +160,16 @@
                 var insideotherright = otherright + 2;
 
                 if(((mybottom > outsideothertop) && (mybottom < otherbottom)) && ((myleft > insideotherleft) && (myleft < insideotherright)) ||
-                ((mybottom > outsideothertop) && (mybottom < otherbottom)) && ((myright > insideotherleft) && (myright < insideotherright))) {
+                    ((mybottom > outsideothertop) && (mybottom < otherbottom)) && ((myright > insideotherleft) && (myright < insideotherright))) {
                     mybottom = outsideothertop;
                     this.gravitySpeed = -0.1;
                 }
 
-                if(((mytop > othertop) && (mytop < outsideotherbottom)) && ((myleft > otherleft) && (myleft < otherright)) ||
-                ((mytop > othertop) && (mytop < outsideotherbottom)) && ((myright > otherleft) && (myright < otherright))) {
+                if(((mytop > othertop) && (mytop < outsideotherbottom)) && ((myleft > insideotherleft) && (myleft < insideotherright)) ||
+                ((mytop > othertop) && (mytop < outsideotherbottom)) && ((myright > insideotherleft) && (myright < insideotherright))) {
                     mytop = outsideotherbottom;
-                    this.gravitySpeed = -0.1;
+                    this.gravitySpeed = 1;
+                    this.gravity = 0;
                 }
 
                 if(((mybottom >othertop) && (mybottom < otherbottom)) && ((myleft > otherleft) && (myleft < otherright)) ||
@@ -195,8 +196,8 @@
             myGameArea.frameNo += 1;
             if (myGameArea.frameNo == 1 || everyinterval(150)) {
                 x = myGameArea.canvas.width;
-                minHeight = 20;
-                maxHeight = 200;
+                minHeight = 150;
+                maxHeight = 250;
                 height = Math.floor(Math.random()*(maxHeight-minHeight+1)+minHeight);
                 minGap = 50;
                 maxGap = 200;
@@ -205,7 +206,7 @@
 //                Obstacle1.push(new component(10, x - height - gap, "green", x, height + gap));
 //                Obstacle2.update();
 //                myObstacles.push(new component(20, 20, "green", x, height - gap));
-                myObstacles.push(new component(60, 30, "blue", x, 200, "object"));
+                myObstacles.push(new component(60, 30, "blue", x, height, "object"));
             }
             for (i = 0; i < myObstacles.length; i += 1) {
                 myObstacles[i].x += -1;
@@ -213,7 +214,7 @@
             }
 
             if (myGameArea.key && myGameArea.key == 32) {
-                jump();
+                    jump();
             }
             myScore.text="SCORE: " + myGameArea.frameNo;
             myScore.update();
@@ -234,9 +235,11 @@
         }
 
         function jump() {
-            if(myGamePiece.y > 150) {
-                myGamePiece.gravitySpeed = -5;
-                setTimeout(accelerate, 200);
+            if(myGamePiece.y > 120) {
+                if(myGamePiece.gravitySpeed < 1) {
+                    myGamePiece.gravitySpeed = -4;
+                    setTimeout(accelerate, 200);
+                }
             }
         }
 
