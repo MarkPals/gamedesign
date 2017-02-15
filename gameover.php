@@ -13,6 +13,6 @@
 <input type="button" onclick="location.href='index.php'" name="leaderboard" id="leaderboard" value="Retry">
 </div>
 <?php 
-    echo $_POST['score'];
+    echo $_POST[$score];
 ?>
 </HTML>

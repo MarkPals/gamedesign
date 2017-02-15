@@ -35,17 +35,11 @@
         var myObstacles = [];
         var myScore;
 
-//        var Obstacle1;
-//        var Obstacle2;
-
-
         function startGame() {
-            // myGamePiece = new component(30, 30, "red", 60, 120, "", "sprites/sprite.png");
+
             myGamePiece = new component(30, 30, "transparent", 10, 120);
             myGamePiece.gravity = 0.2;
             myScore = new component("30px", "Consolas", "black", 480, 40, "text");
-            // Obstacle1  = new component(50, 25, "green", 200, 245);
-            // Obstacle2  = new component(50, 25, "green", 300, 230);
             myGameArea.start();
         }
 
@@ -99,7 +93,7 @@
 
             //Set image src
             this.player.src = "sprites/sprite.png";
-            this.block.src = "sprites/spikes.png";
+            this.block.src = "sprites/rock.png";
 
         };
 
@@ -121,8 +115,10 @@
                     ctx.fillText(this.text, this.x, this.y);
                 }else {
                     if (this.type == "object") {
-                        ctx.fillStyle = color;
-                        ctx.fillRect(this.x, this.y, this.width, this.height); 
+                        ctx.save
+                        ctx.drawImage(imageRepository.block, this.x, this.y, this.width, this.height);
+                        ctx.restore
+                        // ctx.fillRect(this.x, this.y, this.width, this.height); 
                     }else {
                         ctx.save;
                         ctx.drawImage(imageRepository.player, this.x, this.y, this.width, this.height);
