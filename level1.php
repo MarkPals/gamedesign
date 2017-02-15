@@ -6,7 +6,7 @@
     <TITLE>Gamepjuh</TITLE>
 </HEAD>
 <style>
-    #canvas, #gamecanvas {
+    #gamecanvas {
         border: 1px solid black;
         position: absolute;
         left: 25%;
@@ -122,7 +122,7 @@
             this.block_deadly.src = "sprites/spike.png";
             this.grass.src = "sprites/grass.png";
 
-        }
+        };
 
         function component(width, height, color, x, y, type, image) {
             this.type = type;
@@ -181,10 +181,34 @@
                 var otherright = otherobj.x + (otherobj.width);
                 var othertop = otherobj.y;
                 var otherbottom = otherobj.y + (otherobj.height);
-                var crash = true;
-                if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
-                    crash = false;
+                var crash = false;
+
+                var outsideothertop = othertop - 2;
+                var outsideotherbottom = otherbottom + 2;
+                var insideotherleft = otherleft  + 2;
+                var insideotherright = otherright + 2;
+
+                if(((mybottom > outsideothertop) && (mybottom < otherbottom)) && ((myleft > insideotherleft) && (myleft < insideotherright)) ||
+                    ((mybottom > outsideothertop) && (mybottom < otherbottom)) && ((myright > insideotherleft) && (myright < insideotherright))) {
+                    mybottom = outsideothertop;
+                    this.gravitySpeed = -0.1;
                 }
+
+                if(((mytop > othertop) && (mytop < outsideotherbottom)) && ((myleft > insideotherleft) && (myleft < insideotherright)) ||
+                    ((mytop > othertop) && (mytop < outsideotherbottom)) && ((myright > insideotherleft) && (myright < insideotherright))) {
+                    mytop = outsideotherbottom;
+                    this.gravitySpeed = 1;
+                    this.gravity = 0;
+                }
+
+                if(((mybottom >othertop) && (mybottom < otherbottom)) && ((myleft > otherleft) && (myleft < otherright)) ||
+                    ((mybottom >othertop) && (mybottom < otherbottom)) && ((myright > otherleft) && (myright < otherright)) ||
+                    ((mytop > othertop) && (mytop < otherbottom)) && ((myleft > otherleft) && (myleft < otherright)) ||
+                    ((mytop > othertop) && (mytop < otherbottom)) && ((myright > otherleft) && (myright < otherright))) {
+                    crash = true;
+                }
+
+
                 return crash;
             }
         }
@@ -272,35 +296,14 @@
         }
 
         function jump() {
-            if(myGamePiece.y > 150) {
-                myGamePiece.gravity = -0.1;
-                setTimeout(accelerate, 100);
+            if(myGamePiece.y > 120) {
+                if(myGamePiece.gravitySpeed < 1) {
+                    myGamePiece.gravitySpeed = -4;
+                    setTimeout(accelerate, 200);
+                }
             }
         }
 
-//        var canvas = document.getElementById("canvas");
-//        var ctx = canvas.getContext("2d");
-//        canvas.width = 680;
-//        canvas.height = 270;
-//
-//        //draw Image
-//        var velocity=100;
-//        var bgImage = new Image();
-//        bgImage.addEventListener('load',drawImage,false);
-//        bgImage.src = "sprites/hoi.jpg";
-//        function drawImage(time){
-//            var framegap=time-lastRepaintTime;
-//            lastRepaintTime=time;
-//            var translateX=velocity*(framegap/1000);
-//            ctx.clearRect(0,0,canvas.width,canvas.height);
-//            var pattern=ctx.createPattern(bgImage,"repeat-x");
-//            ctx.fillStyle=pattern;
-//            ctx.rect(translateX,0,bgImage.width,bgImage.height);
-//            ctx.fill();
-//            ctx.translate(-translateX,0);
-//            requestAnimationFrame(drawImage);
-//        }
-//        var lastRepaintTime=window.performance.now();
     </script>
 </div>
 
