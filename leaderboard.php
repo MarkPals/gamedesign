@@ -41,7 +41,7 @@
                     echo "<br>Verbinding niet gemaakt";
                 }
 
-                $query = "SELECT * FROM score ORDER BY gamescore DESC LIMIT 10";
+                $query = "SELECT DISTINCT * FROM score ORDER BY gamescore DESC LIMIT 10";
 
                 $insert = $database->prepare($query);
                 $insert->setFetchMode(PDO::FETCH_ASSOC);

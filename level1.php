@@ -27,7 +27,9 @@
 <p class="controls">Press space to jump</p>
 <div id="test">
     <canvas id="gamecanvas"></canvas>
-
+    <?php
+        echo "<script>var naamPlayer = '" . $_POST["naam"] . "';</script><br>";
+    ?>
 
     <script>
 
@@ -35,6 +37,7 @@
         var myObstacles = [];
         var myObstaclesplatform = [];
         var myScore;
+        var dead = false;
 
         function startGame() {
 
@@ -189,6 +192,7 @@
                     ((mytop > othertop) && (mytop < otherbottom)) && ((myleft > otherleft) && (myleft < otherright)) ||
                     ((mytop > othertop) && (mytop < otherbottom)) && ((myright > otherleft) && (myright < otherright))) {
                     crash = true;
+                    dead = true;
                 }
 
                 return crash;
@@ -210,6 +214,8 @@
                     ((mytop > othertop) && (mytop < otherbottom)) && ((myleft > otherleft) && (myleft < otherright)) ||
                     ((mytop > othertop) && (mytop < otherbottom)) && ((myright > otherleft) && (myright < otherright))) {
                     crash = true;
+                    dead = true;
+                    
                 }
 
                 return crash;
@@ -221,17 +227,28 @@
 //        to stop the block
             for (i = 0; i < myObstacles.length; i += 1) {
                 if (myGamePiece.crashWith(myObstacles[i])) {
-                    return;
+                    var testid = makeid() + myGameArea.frameNo + 1340 + makeid();
+                    
+                    window.location.href = "gameover.php?score=" + testid + "&naam=" + naamPlayer;               
+                    break;
                 }
             }
 
+
             for (i = 0; i < myObstaclesplatform.length; i += 1) {
                 if (myGamePiece.crashWithplatform(myObstaclesplatform[i])) {
-                    return;
+                    var testid = makeid() + myGameArea.frameNo + 1340 + makeid();
+                    
+                    window.location.href = "gameover.php?score=" + testid + "&naam=" + naamPlayer;   
+                    break;
                 }
+            }
+            if (dead) { //while
+
             }
             myGameArea.clear();
             myGameArea.frameNo += 1;
+
             if (myGameArea.frameNo == 1 || everyinterval(150)) {
                 x = myGameArea.canvas.width;
                 minHeight = 150;
@@ -265,7 +282,16 @@
             myGamePiece.newPos();
             myGamePiece.update();
         }
+    function makeid()
+        {
+            var text = "";
+            var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
+            for( var i=0; i < 5; i++ )
+                text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+            return text;
+        }
 
         function everyinterval(n) {
             if((myGameArea.frameNo / n) % 1 == 0) {
