@@ -6,7 +6,7 @@
     <TITLE>Gamepjuh</TITLE>
 </HEAD>
 <style>
-    #canvas, #gamecanvas {
+    #gamecanvas {
         border: 1px solid black;
         position: absolute;
         left: 25%;
@@ -20,6 +20,13 @@
         -webkit-animation: animatedBackground 200000s linear infinite;
     }
 
+    /*#canvas {*/
+        /*z-index: 999;*/
+    /*}*/
+
+    /*#gamecanvas {*/
+        /*z-index: 1;*/
+    /*}*/
 </style>
 <BODY onload="startGame()">
 
@@ -34,15 +41,25 @@
         var myGamePiece;
         var myObstacles = [];
         var myScore;
+        var myGrass = [];
+
+        var Obstacle1;
+        var Obstacle2;
 
         var audio = new Audio('theme.mp3');
+        var jumpaudio = new Audio('jump.mp3')
+
 
         function startGame() {
-
+            // myGamePiece = new component(30, 30, "red", 60, 120, "", "sprites/sprite.png");
             myGamePiece = new component(30, 30, "transparent", 10, 120);
-            myGamePiece.gravity = 0.02;
+            myGamePiece.gravity = 0.05;
             myScore = new component("30px", "Consolas", "black", 480, 40, "text");
+            // Obstacle1  = new component(50, 25, "green", 200, 245);
+            // Obstacle2  = new component(50, 25, "green", 300, 230);
+            myGrass = new component(20, 20, "transparent", 10, 120, "object2");
             myGameArea.start();
+            audio.volume = 0.2;
             audio.play();
         }
 
@@ -55,6 +72,7 @@
                 document.body.insertBefore(this.canvas, document.body.childNodes[0]);
                 this.frameNo = 0;
                 window.addEventListener('keydown', function (e) {
+                    jumpaudio.play();
                     myGameArea.key = e.keyCode;
                     press++;
                 })
@@ -76,9 +94,10 @@
             //define images
             this.player = new Image();
             this.block_deadly = new Image();
+            this.grass = new Image();
 
             //Ensure all images have been loaded before game start
-            var numImages = 2;
+            var numImages = 3;
             var numLoaded = 0;
             function imageLoaded() {
                 numLoaded++
@@ -94,12 +113,16 @@
             this.block_deadly.onLoad = function () {
                 imageLoaded();
             }
+            this.grass.onLoad = function () {
+                imageLoaded();
+            }
 
             //Set image src
             this.player.src = "sprites/sprite.png";
             this.block_deadly.src = "sprites/spike.png";
+            this.grass.src = "sprites/grass.png";
 
-        }
+        };
 
         function component(width, height, color, x, y, type, image) {
             this.type = type;
@@ -124,10 +147,14 @@
                         ctx.drawImage(imageRepository.block_deadly, this.x, this.y, this.width, this.height);
                         ctx.restore
                         ctx.fillStyle = color;
-                        ctx.fillRect(this.x, this.y, this.width, this.height); 
+                        ctx.fillRect(this.x, this.y, this.width, this.height);
                     }else {
                         ctx.save
                         ctx.drawImage(imageRepository.player, this.x, this.y, this.width, this.height);
+                        ctx.restore
+                    }if (this.type == "object2") {
+                        ctx.save
+                        ctx.drawImage(imageRepository.grass, this.x, this.y, this.width, this.height);
                         ctx.restore
                     }
                 }
@@ -160,24 +187,25 @@
                 var outsideotherbottom = otherbottom + 2;
                 var insideotherleft = otherleft  + 2;
                 var insideotherright = otherright + 2;
-                
-               if(((mybottom > outsideothertop) && (mybottom < otherbottom)) && ((myleft > insideotherleft) && (myleft < insideotherright)) ||
-                ((mybottom > outsideothertop) && (mybottom < otherbottom)) && ((myright > insideotherleft) && (myright < insideotherright))) {
+
+                if(((mybottom > outsideothertop) && (mybottom < otherbottom)) && ((myleft > insideotherleft) && (myleft < insideotherright)) ||
+                    ((mybottom > outsideothertop) && (mybottom < otherbottom)) && ((myright > insideotherleft) && (myright < insideotherright))) {
                     mybottom = outsideothertop;
                     this.gravitySpeed = -0.1;
                 }
 
-                if(((mytop > othertop) && (mytop < outsideotherbottom)) && ((myleft > otherleft) && (myleft < otherright)) ||
-                ((mytop > othertop) && (mytop < outsideotherbottom)) && ((myright > otherleft) && (myright < otherright))) {
+                if(((mytop > othertop) && (mytop < outsideotherbottom)) && ((myleft > insideotherleft) && (myleft < insideotherright)) ||
+                    ((mytop > othertop) && (mytop < outsideotherbottom)) && ((myright > insideotherleft) && (myright < insideotherright))) {
                     mytop = outsideotherbottom;
-                    this.gravitySpeed = -0.1;
+                    this.gravitySpeed = 1;
+                    this.gravity = 0;
                 }
 
                 if(((mybottom >othertop) && (mybottom < otherbottom)) && ((myleft > otherleft) && (myleft < otherright)) ||
-                ((mybottom >othertop) && (mybottom < otherbottom)) && ((myright > otherleft) && (myright < otherright)) ||
-                ((mytop > othertop) && (mytop < otherbottom)) && ((myleft > otherleft) && (myleft < otherright)) ||
-                ((mytop > othertop) && (mytop < otherbottom)) && ((myright > otherleft) && (myright < otherright))) {
-                  crash = true;
+                    ((mybottom >othertop) && (mybottom < otherbottom)) && ((myright > otherleft) && (myright < otherright)) ||
+                    ((mytop > othertop) && (mytop < otherbottom)) && ((myleft > otherleft) && (myleft < otherright)) ||
+                    ((mytop > othertop) && (mytop < otherbottom)) && ((myright > otherleft) && (myright < otherright))) {
+                    crash = true;
                 }
 
 
@@ -190,9 +218,13 @@
 //        to stop the block
             for (i = 0; i < myObstacles.length; i += 1) {
                 if (myGamePiece.crashWith(myObstacles[i])) {
-                    // alert("Game over");
-                    // alert("Your score:" + myGameArea.frameNo);
-                    
+                    alert("Game over");
+                    alert("Your score:" + myGameArea.frameNo);
+                    document.write("<form action='gameover.php method='POST'>");
+                    document.write("<p class='score'>Score" + myGameArea.frameNo + "</p>");
+                    document.write("<input type='button' name='submit' value='verzend score'>")
+                    document.write("</form>");
+                    window.location = "gameover.php";
                     return;
                 }
             }
@@ -210,11 +242,21 @@
 //                Obstacle1.push(new component(10, x - height - gap, "green", x, height + gap));
 //                Obstacle2.update();
 //                myObstacles.push(new component(20, 20, "green", x, height - gap));
+
+//              Push new objects into game, specifying height, width and cords. User height or gap for random cords
                 myObstacles.push(new component(20, 20, "transparent", x, 250, "object"));
+                myGrass.push(new component(10, 10, "black", x, 200, "object"));
             }
+
+            // Note to self (stijn) Add for loop for extra objects w / w/o collision
+                //do not touch plz
             for (i = 0; i < myObstacles.length; i += 1) {
                 myObstacles[i].x += -1;
                 myObstacles[i].update();
+            }
+            for (i = 0; i < myGrass.length; i += 1) {
+                myGrass[i].x += -1;
+                myGrass[i].update();
             }
 
             if (myGameArea.key && myGameArea.key == 32) {
@@ -238,6 +280,12 @@
             ctx.restore
         }
 
+        function drawGrass() {
+            ctx.save
+            ctx.drawImage(grass, this.x, this.y);
+            ctx.restore
+        }
+
         function everyinterval(n) {
             if((myGameArea.frameNo / n) % 1 == 0) {return true;}
             return false;
@@ -248,35 +296,14 @@
         }
 
         function jump() {
-            if(myGamePiece.y > 150) {
-                myGamePiece.gravity = -0.1;
-                setTimeout(accelerate, 100);
+            if(myGamePiece.y > 120) {
+                if(myGamePiece.gravitySpeed < 1) {
+                    myGamePiece.gravitySpeed = -4;
+                    setTimeout(accelerate, 200);
+                }
             }
         }
 
-//        var canvas = document.getElementById("canvas");
-//        var ctx = canvas.getContext("2d");
-//        canvas.width = 680;
-//        canvas.height = 270;
-//
-//        //draw Image
-//        var velocity=100;
-//        var bgImage = new Image();
-//        bgImage.addEventListener('load',drawImage,false);
-//        bgImage.src = "sprites/hoi.jpg";
-//        function drawImage(time){
-//            var framegap=time-lastRepaintTime;
-//            lastRepaintTime=time;
-//            var translateX=velocity*(framegap/1000);
-//            ctx.clearRect(0,0,canvas.width,canvas.height);
-//            var pattern=ctx.createPattern(bgImage,"repeat-x");
-//            ctx.fillStyle=pattern;
-//            ctx.rect(translateX,0,bgImage.width,bgImage.height);
-//            ctx.fill();
-//            ctx.translate(-translateX,0);
-//            requestAnimationFrame(drawImage);
-//        }
-//        var lastRepaintTime=window.performance.now();
     </script>
 </div>
 
