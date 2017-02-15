@@ -6,7 +6,7 @@
     <TITLE>Gamepjuh</TITLE>
 </HEAD>
 <style>
-    #gamecanvas {
+    #canvas, #gamecanvas {
         border: 1px solid black;
         position: absolute;
         left: 25%;
@@ -20,6 +20,13 @@
         -webkit-animation: animatedBackground 200000s linear infinite;
     }
 
+    /*#canvas {*/
+        /*z-index: 999;*/
+    /*}*/
+
+    /*#gamecanvas {*/
+        /*z-index: 1;*/
+    /*}*/
 </style>
 <BODY onload="startGame()">
 
@@ -33,14 +40,19 @@
 
         var myGamePiece;
         var myObstacles = [];
-        var myObstaclesplatform = [];
         var myScore;
 
-        function startGame() {
+        var Obstacle1;
+        var Obstacle2;
 
-            myGamePiece = new component(30, 30, "transparent", 10, 120, "player");
-            myGamePiece.gravity = 0.2;
+
+        function startGame() {
+            // myGamePiece = new component(30, 30, "red", 60, 120, "", "sprites/sprite.png");
+            myGamePiece = new component(30, 30, "transparent", 10, 120);
+            myGamePiece.gravity = 0.05;
             myScore = new component("30px", "Consolas", "black", 480, 40, "text");
+            // Obstacle1  = new component(50, 25, "green", 200, 245);
+            // Obstacle2  = new component(50, 25, "green", 300, 230);
             myGameArea.start();
         }
 
@@ -54,16 +66,17 @@
                 this.frameNo = 0;
                 window.addEventListener('keydown', function (e) {
                     myGameArea.key = e.keyCode;
-                });
-                window.addEventListener('keyup', function () {
+                    press++;
+                })
+                window.addEventListener('keyup', function (e) {
                     myGameArea.key = false;
-                });
+                })
                 this.interval = setInterval(updateGameArea, 5.5);
             },
             clear : function() {
                 this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
             }
-        };
+        }
 
          // ************
             // sprites
@@ -73,39 +86,34 @@
             //define images
             this.player = new Image("kaas");
             this.block = new Image();
-            this.spike = new Image();
 
             //Ensure all images have been loaded before game start
             var numImages = 2;
             var numLoaded = 0;
             function imageLoaded() {
-                numLoaded++;
+                numLoaded++
                 if (numLoaded === numImages) {
                     window.init;
                 } else {
-//                    alert("images not loaded");
+                    alert("images not loaded");
                 }
             }
             this.player.onload = function () {
                 imageLoaded();
-            };
+            }
             this.block.onLoad = function () {
-                imageLoaded();
-            };
-
-            this.spike.onload = function () {
                 imageLoaded();
             }
 
             //Set image src
             this.player.src = "sprites/sprite.png";
-            this.block.src = "sprites/rock.png";
-            this.spike.src = "sprites/spike.png";
+            this.block.src = "sprites/spikes.png";
 
-        };
+        }
 
-        function component(width, height, color, x, y, type) {
+        function component(width, height, color, x, y, type, image) {
             this.type = type;
+            this.score = 0;
             this.width = width;
             this.height = height;
             this.speedX = 0;
@@ -121,79 +129,29 @@
                     ctx.fillStyle = color;
                     ctx.fillText(this.text, this.x, this.y);
                 }else {
-                    if (this.type == "object" || this.type == "objectplatform") {
+                    if (this.type == "object") {
+                        ctx.fillStyle = color;
+                        ctx.fillRect(this.x, this.y, this.width, this.height); 
+                    }else {
                         ctx.save
-                        ctx.drawImage(imageRepository.block, this.x, this.y, this.width, this.height);
-                        ctx.restore
-                        // ctx.fillRect(this.x, this.y, this.width, this.height); 
-                    }
-                    if(this.type == "player") {
-                        ctx.save;
                         ctx.drawImage(imageRepository.player, this.x, this.y, this.width, this.height);
-                        ctx.restore;
+                        ctx.restore
                     }
-                    if (this.type == "objectspike") {
-                        ctx.save;
-                        ctx.drawImage(imageRepository.spike, this.x, this.y, this.width, this.height);
-                        ctx.restore;
-                    }
-
                 }
-            };
+            }
             this.newPos = function() {
                 this.gravitySpeed += this.gravity;
                 this.x += this.speedX;
                 this.y += this.speedY + this.gravitySpeed;
                 this.hitBottom();
-            };
+            }
             this.hitBottom = function() {
                 var rockbottom = myGameArea.canvas.height - this.height;
                 if (this.y > rockbottom) {
                     this.y = rockbottom;
                     this.gravitySpeed = 0;
                 }
-            };
-            this.crashWithplatform = function(otherobj) {
-                var myleft = this.x;
-                var myright = this.x + (this.width);
-                var mytop = this.y;
-                var mybottom = this.y + (this.height);
-                var otherleft = otherobj.x;
-                var otherright = otherobj.x + (otherobj.width);
-                var othertop = otherobj.y;
-                var otherbottom = otherobj.y + (otherobj.height);
-                var type = otherobj.type;
-                var crash = false;
-
-                var outsideothertop = othertop - 2;
-                var outsideotherbottom = otherbottom + 2;
-                var insideotherleft = otherleft  + 2;
-                var insideotherright = otherright + 2;
-
-                if (((mybottom > outsideothertop) && (mybottom < otherbottom)) && ((myleft > insideotherleft) && (myleft < insideotherright)) ||
-                    ((mybottom > outsideothertop) && (mybottom < otherbottom)) && ((myright > insideotherleft) && (myright < insideotherright))) {
-                    mybottom = outsideothertop;
-                    this.gravitySpeed = -0.1;
-                }
-
-                if (((mytop > othertop) && (mytop < outsideotherbottom)) && ((myleft > insideotherleft) && (myleft < insideotherright)) ||
-                    ((mytop > othertop) && (mytop < outsideotherbottom)) && ((myright > insideotherleft) && (myright < insideotherright))) {
-                    mytop = outsideotherbottom;
-                    this.gravitySpeed = 1;
-                    this.gravity = 0;
-                }
-
-
-                if (((mybottom > othertop) && (mybottom < otherbottom)) && ((myleft > otherleft) && (myleft < otherright)) ||
-                    ((mybottom > othertop) && (mybottom < otherbottom)) && ((myright > otherleft) && (myright < otherright)) ||
-                    ((mytop > othertop) && (mytop < otherbottom)) && ((myleft > otherleft) && (myleft < otherright)) ||
-                    ((mytop > othertop) && (mytop < otherbottom)) && ((myright > otherleft) && (myright < otherright))) {
-                    crash = true;
-                }
-
-                return crash;
             }
-
             this.crashWith = function(otherobj) {
                 var myleft = this.x;
                 var myright = this.x + (this.width);
@@ -203,15 +161,10 @@
                 var otherright = otherobj.x + (otherobj.width);
                 var othertop = otherobj.y;
                 var otherbottom = otherobj.y + (otherobj.height);
-                var crash = false;
-
-                if (((mybottom > othertop) && (mybottom < otherbottom)) && ((myleft > otherleft) && (myleft < otherright)) ||
-                    ((mybottom > othertop) && (mybottom < otherbottom)) && ((myright > otherleft) && (myright < otherright)) ||
-                    ((mytop > othertop) && (mytop < otherbottom)) && ((myleft > otherleft) && (myleft < otherright)) ||
-                    ((mytop > othertop) && (mytop < otherbottom)) && ((myright > otherleft) && (myright < otherright))) {
-                    crash = true;
+                var crash = true;
+                if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
+                    crash = false;
                 }
-
                 return crash;
             }
         }
@@ -224,41 +177,29 @@
                     return;
                 }
             }
-
-            for (i = 0; i < myObstaclesplatform.length; i += 1) {
-                if (myGamePiece.crashWithplatform(myObstaclesplatform[i])) {
-                    return;
-                }
-            }
             myGameArea.clear();
             myGameArea.frameNo += 1;
             if (myGameArea.frameNo == 1 || everyinterval(150)) {
                 x = myGameArea.canvas.width;
-                minHeight = 150;
-                maxHeight = 220;
+                minHeight = 20;
+                maxHeight = 200;
                 height = Math.floor(Math.random()*(maxHeight-minHeight+1)+minHeight);
-                myObstaclesplatform.push(new component(60, 30, "blue", x, height, "objectplatform"));
-            }
-
-            if (myGameArea.frameNo == 1 || everyinterval(100)) {
-                x = myGameArea.canvas.width;
-                minHeight = 150;
-                maxHeight = 220;
-                height = Math.floor(Math.random()*(maxHeight-minHeight+1)+minHeight);
-                myObstacles.push(new component(25, 25, "red", x, 250, "objectspike"));
+                minGap = 50;
+                maxGap = 200;
+                gap = Math.floor(Math.random()*(maxGap-minGap+1)+minGap);
+//                Obstacle1.push(new component(10, height, "green", x, 0));
+//                Obstacle1.push(new component(10, x - height - gap, "green", x, height + gap));
+//                Obstacle2.update();
+//                myObstacles.push(new component(20, 20, "green", x, height - gap));
+                myObstacles.push(new component(20, 20, "blue", x, 250, "object"));
             }
             for (i = 0; i < myObstacles.length; i += 1) {
                 myObstacles[i].x += -1;
                 myObstacles[i].update();
             }
 
-            for (i = 0; i < myObstaclesplatform.length; i += 1) {
-                myObstaclesplatform[i].x += -1;
-                myObstaclesplatform[i].update();
-            }
-
             if (myGameArea.key && myGameArea.key == 32) {
-                    jump();
+                jump();
             }
             myScore.text="SCORE: " + myGameArea.frameNo;
             myScore.update();
@@ -266,27 +207,53 @@
             myGamePiece.update();
         }
 
+        function drawPlayer() {
+            ctx.save
+            ctx.drawImage(player, this.x, this.y);
+            ctx.restore
+        }
 
         function everyinterval(n) {
-            if((myGameArea.frameNo / n) % 1 == 0) {
-                return true;
-            }
+            if((myGameArea.frameNo / n) % 1 == 0) {return true;}
             return false;
         }
 
         function accelerate() {
-            myGamePiece.gravity = 0.1;
+            myGamePiece.gravity = 0.2;
         }
 
         function jump() {
-            if(myGamePiece.y > 120) {
-                if(myGamePiece.gravitySpeed < 1) {
-                    myGamePiece.gravitySpeed = -4;
-                    setTimeout(accelerate, 200);
-                }
+            if(myGamePiece.y > 150) {
+                myGamePiece.gravity = -0.1;
+                setTimeout(accelerate, 100);
             }
         }
 
+
+
+//        var canvas = document.getElementById("canvas");
+//        var ctx = canvas.getContext("2d");
+//        canvas.width = 680;
+//        canvas.height = 270;
+//
+//        //draw Image
+//        var velocity=100;
+//        var bgImage = new Image();
+//        bgImage.addEventListener('load',drawImage,false);
+//        bgImage.src = "sprites/hoi.jpg";
+//        function drawImage(time){
+//            var framegap=time-lastRepaintTime;
+//            lastRepaintTime=time;
+//            var translateX=velocity*(framegap/1000);
+//            ctx.clearRect(0,0,canvas.width,canvas.height);
+//            var pattern=ctx.createPattern(bgImage,"repeat-x");
+//            ctx.fillStyle=pattern;
+//            ctx.rect(translateX,0,bgImage.width,bgImage.height);
+//            ctx.fill();
+//            ctx.translate(-translateX,0);
+//            requestAnimationFrame(drawImage);
+//        }
+//        var lastRepaintTime=window.performance.now();
     </script>
 </div>
 

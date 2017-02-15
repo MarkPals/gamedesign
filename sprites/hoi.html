@@ -14,7 +14,7 @@ var velocity=100;
 var bgImage = new Image();
 bgImage.addEventListener('load',drawImage,false);
 bgImage.src = "hoi.jpg";
-function drawImage(time){          
+function drawImage(time){
         var framegap=time-lastRepaintTime;
 		lastRepaintTime=time;
 		var translateX=velocity*(framegap/1000);
@@ -23,7 +23,7 @@ function drawImage(time){
 		ctx.fillStyle=pattern;
 		ctx.rect(translateX,0,bgImage.width,bgImage.height);
 	   ctx.fill();
-        ctx.translate(-translateX,0);	
+        ctx.translate(-translateX,0);
 	requestAnimationFrame(drawImage);
 }
 var lastRepaintTime=window.performance.now();
