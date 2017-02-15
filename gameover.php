@@ -13,6 +13,68 @@
 <input type="button" onclick="location.href='index.php'" name="leaderboard" id="leaderboard" value="Retry">
 </div>
 <?php 
-    echo $_POST[$score];
+	
+	/*!!!!! Resultaten !!!!!!*/
+    $resultaat =  $_GET['score'];
+    $resultaatencoded = preg_replace("/[^0-9,.]/", "", $resultaat);
+    $result = $resultaatencoded - 100;
+    $result1 = substr_replace($result, "", -4);
+    echo "<br>" . $result1;
+
+    $resultaatNaam = $_GET['naam'];
+    echo "<br>" . $resultaatNaam;
+    //echo $_POST['fn'];
+    echo "<script>alert($result1);</script>";
+
+
+	/*MySQL Stuff*/
+		print_r(PDO::getAvailableDrivers());
+        $dbhost = "localhost";
+        $dbname = "game";
+        $user = "root";
+        $pass = "";	
+		try {
+			$database = new
+			PDO("mysql:host=$dbhost;dbname=$dbname",$user,$pass);
+			$database->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+			echo "<br />Verbinding gemaakt";
+		}
+		catch(PDOException $e) {
+			echo $e->getMessage();
+			echo "<br />Verbinding NIET gemaakt";
+		}
+
+		$query = "SELECT * FROM score";
+		$insert = $database->prepare($query);
+		try {
+			$insert->execute();
+			$insert->setFetchMode(PDO::FETCH_ASSOC);
+			foreach($insert as $ins) {
+				$username = $ins["username"];
+				$score = $ins["gamescore"];
+			}
+		}
+		catch(PDOException $e) {
+			echo "tekst niet opgehaald";
+			echo $e->getMessage();
+		}
+
+		$scoremax = $score + 25;
+		$scoremin = $score -25;
+		if($username == $resultaatNaam && $result1 < $scoremax && $result1 > $scoremin) {
+			exit;	
+		}
+		$query = "INSERT INTO score (gamescore, username) values (?, ?)";
+		$insert = $database->prepare($query);
+		$data = array($result1, $resultaatNaam); //result 1 = gamescore resultaatNaam = naam van speler
+
+		try {
+			$insert->execute($data);
+			echo "<script>alert('Gamescore toegevoegd aan de leaderboard');</script>";
+		}
+		catch(PDOException $e) {
+			echo "<script>alert('Gamescore niet toegevoegd. Zie error message.');</script>";
+			echo $e->getMessage();
+		}
 ?>
 </HTML>
