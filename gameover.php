@@ -19,16 +19,16 @@
     $resultaatencoded = preg_replace("/[^0-9,.]/", "", $resultaat);
     $result = $resultaatencoded - 100;
     $result1 = substr_replace($result, "", -4);
-    echo "<br>" . $result1;
+    echo "<center><br><b>Jouw score: <font color='red'>" . $result1 . "</font></center>";
 
     $resultaatNaam = $_GET['naam'];
-    echo "<br>" . $resultaatNaam;
+    echo "<center><b><br>Jouw gebruikersnaam: <font color='red'>" . $resultaatNaam . "</font></center>";
     //echo $_POST['fn'];
-    echo "<script>alert($result1);</script>";
+    //echo "<script>alert($result1);</script>";
 
 
 	/*MySQL Stuff*/
-		print_r(PDO::getAvailableDrivers());
+		//print_r(PDO::getAvailableDrivers());
         $dbhost = "localhost";
         $dbname = "game";
         $user = "root";
@@ -37,11 +37,11 @@
 			$database = new
 			PDO("mysql:host=$dbhost;dbname=$dbname",$user,$pass);
 			$database->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
-			echo "<br />Verbinding gemaakt";
+			//echo "<br />Verbinding gemaakt";
 		}
 		catch(PDOException $e) {
 			echo $e->getMessage();
-			echo "<br />Verbinding NIET gemaakt";
+			echo "<br /><font color='red'><b>KAN GEEN VERBINDING MAKEN MET DE DATABASE! Score niet opgeslagen!</b></font>";
 		}
 
 		$query = "SELECT * FROM score";
@@ -70,10 +70,10 @@
 
 		try {
 			$insert->execute($data);
-			echo "<script>alert('Gamescore toegevoegd aan de leaderboard');</script>";
+			echo "<center><br><font color='red'> ༼ᕗຈل͜ຈ༽ᕗ</font><font color='lime'><b>Gamescore toegevoegd aan de leaderboard! </b></font><font color='red'> ༼ᕗຈل͜ຈ༽ᕗ</font></center>";
 		}
 		catch(PDOException $e) {
-			echo "<script>alert('Gamescore niet toegevoegd. Zie error message.');</script>";
+			echo "<center><font color='red'><br><b>Gamescore niet toegevoegd aan de leaderboard. Contact de systeembeheerder voor verdere instructies.</b></font></center>";
 			echo $e->getMessage();
 		}
 ?>
