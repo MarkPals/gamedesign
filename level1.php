@@ -39,12 +39,18 @@
         var myScore;
         var dead = false;
 
+        var jumpAudio = new Audio("sounds/jump.wav");
+        var music = new Audio("sounds/music.mp3");
+        music.volume = 0.3;
+        var deathAudio = new Audio("sounds/death.mp3");
+
         function startGame() {
 
             myGamePiece = new component(30, 30, "transparent", 10, 120, "player");
             myGamePiece.gravity = 0.2;
             myScore = new component("30px", "Consolas", "black", 480, 40, "text");
             myGameArea.start();
+            music.play();
         }
 
         var myGameArea = {
@@ -57,6 +63,7 @@
                 this.frameNo = 0;
                 window.addEventListener('keydown', function (e) {
                     myGameArea.key = e.keyCode;
+                    jumpAudio.play();
                 });
                 window.addEventListener('keyup', function () {
                     myGameArea.key = false;
@@ -227,6 +234,7 @@
 //        to stop the block
             for (i = 0; i < myObstacles.length; i += 1) {
                 if (myGamePiece.crashWith(myObstacles[i])) {
+                    deathAudio.play();
                     var testid = makeid() + myGameArea.frameNo + 1340 + makeid();
                     
                     window.location.href = "gameover.php?score=" + testid + "&naam=" + naamPlayer;               
@@ -238,7 +246,7 @@
             for (i = 0; i < myObstaclesplatform.length; i += 1) {
                 if (myGamePiece.crashWithplatform(myObstaclesplatform[i])) {
                     var testid = makeid() + myGameArea.frameNo + 1340 + makeid();
-                    
+                    deathAudio.play();
                     window.location.href = "gameover.php?score=" + testid + "&naam=" + naamPlayer;   
                     break;
                 }
